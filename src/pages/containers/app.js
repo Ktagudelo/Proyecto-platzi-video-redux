@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import { Map as map } from "immutable";
@@ -12,6 +12,7 @@ import Videos from "./videos";
 import Home from "../components/home";
 import NotFound from "../components/not-found";
 import Header from "../components/header.js";
+import Video from "./video";
 
 const logger_ = ({ getState, dispatch }) => (next) => (action) => {
   console.log("este es mi viejo estado", getState().toJS());
@@ -32,17 +33,17 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <div>
+        <Fragment>
           <Header />
-          <Router>
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/videos" component={Videos} />
-              <Redirect from="/v" to="/videos" />
-              <Route component={NotFound} />
-            </Switch>
-          </Router>
-        </div>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/videos" component={Videos} />
+            <Route exact path="/videos/:id" component={Video} />
+            <Redirect from="/v/:id" to="/videos/:id" />
+            <Redirect from="/v" to="/videos" />
+            <Route component={NotFound} />
+          </Switch>
+        </Fragment>
       </Provider>
     );
   }
